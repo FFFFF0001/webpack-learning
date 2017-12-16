@@ -85,5 +85,47 @@ module.exports = {
   在终端中输入npm run server即可在本地的8080端口查看结果
 
 ## Loaders
-通过使用不同的loader，webpack有能力调用外部的脚本或工具，实现对不同格式的文件的处理，比如说分析转换scss为css，或者把下一代的JS文件(ES6，ES7)转换为现代浏览器兼容的JS文件，对React的开发而言，合适的Loaders可以把React的中用到的JSX文件转换为JS文件。
+通过使用不同的loader，webpack**有能力调用外部的脚本或工具**，实现对不同格式的文件的处理，比如说分析转换scss为css，或者把下一代的JS文件(ES6，ES7)转换为现代浏览器兼容的JS文件，对React的开发而言，合适的Loaders可以把React的中用到的JSX文件转换为JS文件。
 Loaders需要单独安装并且需要在webpack.config.js中的modules关键字下进行配置
+- test：一个用以匹配loaders所处理文件的拓展名的正则表达式（必须）
+- loader：loader的名称（必须）
+- include/exclude:手动添加必须处理的文件（文件夹）或屏蔽不需要处理的文件（文件夹）（可选）；
+- query：为loaders提供额外的设置选项（可选）
+
+### Babel
+Babel其实是几个模块化的包，其核心功能位于称为babel-core的npm包中，webpack可以把其不同的包整合在一起使用
+```
+npm install --save-dev babel-core babel-loader babel-preset-env babel-preset-react
+```
+在webpack中配置Babel
+```
+module.exports = {
+    entry: __dirname + "/app/main.js",//已多次提及的唯一入口文件
+    output: {
+        path: __dirname + "/public",//打包后的文件存放的地方
+        filename: "bundle.js"//打包后输出文件的文件名
+    },
+    devtool: 'eval-source-map',
+    devServer: {
+        contentBase: "./public",//本地服务器所加载的页面所在的目录
+        historyApiFallback: true,//不跳转
+        inline: true//实时刷新
+    },
+    module: {
+        rules: [
+            {
+                test: /(\.jsx|\.js)$/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: [
+                            "env", "react"
+                        ]
+                    }
+                },
+                exclude: /node_modules/
+            }
+        ]
+    }
+};
+```
