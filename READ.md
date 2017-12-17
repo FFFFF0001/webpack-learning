@@ -245,11 +245,32 @@ npm install --save-dev babel-plugin-react-transform react-transform-hmr
 ```
 npm install --save-dev extract-text-webpack-plugin
 ```
-
+配置
+```
+ plugins: [
+        new webpack.BannerPlugin('版权所有，翻版必究'),
+        new HtmlWebpackPlugin({
+            template: __dirname + "/app/index.tmpl.html"
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.UglifyJsPlugin(),
+        new ExtractTextPlugin("style.css")
+    ],
+```
 #### 缓存
 缓存无处不在，使用缓存的最好方法是保证你的文件名和文件内容是匹配的（内容改变，名称相应改变）
 
 webpack可以把一个哈希值添加到打包的文件名中，使用方法如下,添加特殊的字符串混合体（[name], [id] and [hash]）到输出文件名前
+```
+module.exports = {
+..
+    output: {
+        path: __dirname + "/build",
+        filename: "bundle-[hash].js"
+    },
+   ...
+};
+```
 #### 去除build文件中的残余文件
 添加了hash之后，会导致改变文件内容后重新打包时，文件名不同而内容越来越多，因此这里介绍另外一个很好用的插件clean-webpack-plugin。
 在配置文件的plugins中做相应配置:
