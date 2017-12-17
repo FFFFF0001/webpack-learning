@@ -1,9 +1,14 @@
 //main.js 入口文件
-const greeter = require('./Greeter.js');
-document.querySelector("#root").appendChild(greeter());
-// 终端中输入如下命令
-// webpack app/main.js public/bundle.js
-// 如果webpack不是全局安装的，那么当在终端中使用此命令时，
-// 需要额外指定其在node_modules中的地址，
-// 在终端中输入如下命令
-// node_modules/.bin/webpack app/main.js public/bundle.js
+// 单一的入口，其它的模块需要通过 import, require, url等与入口文件建立其关联
+// const greeter = require('./Greeter.js');
+// document.querySelector("#root").appendChild(greeter());
+
+
+// 使用ES6的模块定义和渲染Greeter模块
+import React from 'react';
+import {render} from 'react-dom';
+import Greeter from './Greeter';
+
+import './main.css';
+
+render(<Greeter />, document.getElementById('root'));
